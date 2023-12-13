@@ -12,6 +12,13 @@
     <link rel="stylesheet" href="<?= base_url('public/assets') ?>/plugins/fontawesome-free/css/all.min.css">
     <!-- Theme style -->
     <link rel="stylesheet" href="<?= base_url('public/assets') ?>/dist/css/adminlte.min.css">
+    <!-- jQuery -->
+    <script src="<?= base_url('public/assets') ?>/plugins/jquery/jquery.min.js"></script>
+
+    <!-- Sweet Alert  -->
+    <link rel="stylesheet" href="<?= base_url('public/assets') ?>/plugins/sweetalert2/sweetalert2.min.css">
+    <script src="<?= base_url('public/assets') ?>/plugins/sweetalert2/sweetalert2.all.min.js"></script>
+
 </head>
 
 <body class="hold-transition sidebar-mini">
@@ -116,8 +123,6 @@
     </div>
     <!-- ./wrapper -->
 
-    <!-- jQuery -->
-    <script src="<?= base_url('public/assets') ?>/plugins/jquery/jquery.min.js"></script>
     <!-- Bootstrap 4 -->
     <script src="<?= base_url('public/assets') ?>/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
     <!-- AdminLTE App -->

@@ -4,11 +4,11 @@ namespace App\Controllers;
 
 use App\Models\Modelkategori;
 
-class Kategori extends BaseController
+class Kategori12 extends BaseController
 {
     public function __construct()
     {
-        $this->kategori = new Modelkategori;
+        $this->kategori = new Modelkategori();
     }
     public function index()
     {
@@ -26,7 +26,6 @@ class Kategori extends BaseController
 
         $noHalaman = $this->request->getVar('page_kategori') ? $this->request->getVar('page_kategori') : 1;
         $data = [
-            // menambahkan pagination 
             'datakategori' => $dataKategori->paginate(10, 'kategori'),
             'pager' => $this->kategori->pager,
             'nohalaman' => $noHalaman,
@@ -38,8 +37,9 @@ class Kategori extends BaseController
     function formTambah()
     {
         if ($this->request->isAJAX()) {
+            $aksi = $this->request->getPost('aksi');
             $msg = [
-                'data' => view('kategori/modalformtambah')
+                'data' => view('kategori/modalformtambah', ['aksi' => $aksi])
             ];
 
             echo json_encode($msg);
@@ -60,12 +60,11 @@ class Kategori extends BaseController
             $msg = [
                 'sukses' => 'Kategori berhasil ditambahkan'
             ];
-
             echo json_encode($msg);
         }
     }
 
-    public function hapus()
+    function hapus()
     {
         if ($this->request->isAJAX()) {
             $idKategori = $this->request->getVar('idkategori');
@@ -75,7 +74,6 @@ class Kategori extends BaseController
             $msg = [
                 'sukses' => 'Kategori berhasil dihapus'
             ];
-
             echo json_encode($msg);
         }
     }
@@ -83,10 +81,9 @@ class Kategori extends BaseController
     function formEdit()
     {
         if ($this->request->isAJAX()) {
-            $idKategori = $this->request->getVar('idkategori');
+            $idKategori =  $this->request->getVar('idkategori');
 
             $ambildatakategori = $this->kategori->find($idKategori);
-
             $data = [
                 'idkategori' => $idKategori,
                 'namakategori' => $ambildatakategori['katnama']
@@ -95,7 +92,6 @@ class Kategori extends BaseController
             $msg = [
                 'data' => view('kategori/modalformedit', $data)
             ];
-
             echo json_encode($msg);
         }
     }
@@ -111,7 +107,7 @@ class Kategori extends BaseController
             ]);
 
             $msg = [
-                'sukses' => 'Data kategori berhasil diupdate'
+                'sukses' =>  'Data kategori berhasil diupdate'
             ];
             echo json_encode($msg);
         }

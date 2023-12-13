@@ -1,4 +1,5 @@
 <?= $this->extend('layout/menu') ?>
+
 <?= $this->section('judul') ?>
 <h3><i class="fa fa-fw fa-table"></i> Manajemen Data Produk</h3>
 <?= $this->endSection() ?>
@@ -6,11 +7,11 @@
 
 <?= $this->section('isi') ?>
 <div class="card">
-    <!-- Start Card Header  -->
     <div class="card-header">
         <h3 class="card-title">
-            <button type="button" class="btn btn-sm btn-primary" onclick="window.location='<?= site_url('produk/add') ?>'">
-                <i class="fa fa-plus"></i>Tambah Data
+            <button type="button" class="btn btn-sm btn-primary"
+                onclick="window.location='<?= site_url('produk/add') ?>'">
+                <i class="fa fa-plus"></i> Tambah Data
             </button>
         </h3>
 
@@ -23,8 +24,6 @@
             </button>
         </div>
     </div>
-    <!-- End Card Header  -->
-    <!-- Start Modal Body  -->
     <div class="card-body">
         <div class="table-responsive">
             <table class="table table-striped table-bordered table-sm">
@@ -39,26 +38,24 @@
                 </thead>
                 <tbody>
                     <?php
+
                     $nomor = 1;
                     foreach ($dataproduk as $r) :
                     ?>
-                        <tr>
-                            <td><?= $nomor++; ?></td>
-                            <td><?= $r['kodebarcode'] ?></td>
-                            <td><?= $r['namaproduk'] ?></td>
-                            <td><?= $r['katnama'] ?></td>
-                            <td><?= $r['satnama'] ?></td>
-
-                        </tr>
+                    <tr>
+                        <td><?= $nomor++; ?></td>
+                        <td><?= $r['kodebarcode']; ?></td>
+                        <td><?= $r['namaproduk']; ?></td>
+                        <td><?= $r['katnama']; ?></td>
+                        <td><?= $r['satnama']; ?></td>
+                    </tr>
                     <?php endforeach; ?>
                 </tbody>
             </table>
             <div class="float-left">
-                <?= $pager->links('produk', 'paging_data') ?>
+                <?= $pager->links('produk', 'paging_data'); ?>
             </div>
         </div>
     </div>
-    <!-- End Modal Body  -->
-
 </div>
-<?= $this->endSection() ?>
+<?= $this->endSection(); ?>
