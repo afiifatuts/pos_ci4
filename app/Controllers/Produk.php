@@ -31,8 +31,20 @@ class Produk extends BaseController
         return view('produk/formtambah');
     }
 
-    // public function ambilDataKategori()
-    // {
-    //     if
-    // }
+    public function ambilDataKategori()
+    {
+        if ($this->request->isAJAX()) {
+            $datakategori = $this->db->table('kategori')->get();
+
+            $isidata = "<option value='' selected>--Pilih--</option>";
+
+            foreach ($datakategori->getResultArray() as $row) : $isidata .= '<option value="' . $row['katid'] . '">' . $row['katnama'] . '</option>';
+            endforeach;
+
+            $msg = [
+                'data' => $isidata
+            ];
+            echo json_encode($msg);
+        }
+    }
 }

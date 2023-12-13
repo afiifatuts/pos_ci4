@@ -96,14 +96,230 @@
 
         <div class="form-group row">
             <label for="hargajual" class="col-sm-4 col-form-label">Harga Jual (Rp)</label>
+            <div class="col-sm-4">
+                <input type="text" style="text-align: right;" class="form-control form-control-sm" name="hargajual" id="hargajual">
+                <div class="invalid-feedback errorHargaJual" style="display:none;"></div>
+            </div>
         </div>
 
+        <div class="form-group row">
+            <label for="uploadgambar" class="col-sm-4 col-form-label">Upload Gambar(Jika Ada)</label>
+            <div class="col-sm-4">
+                <input type="file" name="uploadgambar" id="uploadgambar" class="form-control form-control-md" accept=".jpg,.jpeg,.png">
+                <div class="invalid-feedback errorUpload" style="display:none;"></div>
+            </div>
+        </div>
 
-
-
+        <div class="form-group row">
+            <div class="col-sm-4">
+                <button type="submit" class="btn btn-success tombolSimpan">Simpan</button>
+            </div>
+        </div>
         <?= form_close() ?>
     </div>
     <!-- End Card Body  -->
 </div>
+<div class="viewmodal" style="display:none;"></div>
+<script>
+    function tampilKategori() {
+        $.ajax({
+            url: "<?= site_url('produk/ambilDataKategori') ?>",
+            dataType: "json",
+            success: function(response) {
+                if (response.data) {
+                    $('#kategori').html(response.data);
+                }
+            },
+            error: function(xhr, thrownError) {
+                alert(xhr.status + "\n" + xhr.responseText + "\n" + thrownError);
+            }
+        });
+    }
+
+    function tampilSatuan() {
+        $.ajax({
+            url: "<?= site_url('produk/ambilDataSatuan') ?>",
+            dataType: "json",
+            success: function(response) {
+                if (response.data) {
+                    $('#satuan').html(response.data);
+                }
+            },
+            error: function(xhr, thrownError) {
+                alert(xhr.status + "\n" + xhr.responseText + "\n" + thrownError);
+            }
+        });
+    }
+
+    $(document).ready(function() {
+        tampilKategori();
+        tampilSatuan();
+
+        $('#hargabeli').autoNumeric('init', {
+            aSep: ',',
+            aDec: '.',
+            mDec: '2',
+        })
+
+        $('#hargajual').autoNumeric('init', {
+            aSep: ',',
+            aDec: '.',
+            mDec: '2',
+        })
+
+        $('#stok').autoNumeric('init', {
+            aSep: ',',
+            aDec: '.',
+            mDec: '0',
+        })
+
+        $('.tombolTambahKategori').click(function(e) {
+            e.preventDefault();
+            $.ajax({
+                type: "post",
+                url: "<?= site_url('kategori/formTambah') ?>",
+                data: {
+                    aksi: 1
+                },
+                dataType: "json",
+                success: function(response) {
+                    if (response.data) {
+                        $('.viewmodal').html(response.data).show();
+                        $('#modaltambahkategori').on('shown.bs.modal', function(event) {
+                            $('#namakategori').focus();
+                        })
+                        $('#modaltambahkategori').modal('show');
+                    }
+                },
+                error: function(xhr, thrownError) {
+                    alert(xhr.status + "\n" + xhr.responseText + "\n" + thrownError);
+                }
+            });
+        });
+
+        $('.tombolTambahSatuan').click(function(e) {
+            e.preventDefault();
+            $.ajax({
+                type: "post",
+                url: "<?= site_url('satuan/fromTambah') ?>",
+                data: {
+                    aksi: 1
+                },
+                dataType: "json",
+                success: function(response) {
+                    if (response.data) {
+                        $('.viewmodal').html(response.data).show();
+                        $('#modaltambahsatuan').on('shown.bs.modal', function(event) {
+                            $('#namasatuan').focus();
+                        })
+
+                        $('#modaltambahsatuan').modal('show');
+                    }
+                },
+                error: function(xhr, thrownError) {
+                    alert(xhr.status + "\n" + xhr.responseText + "\n" + thrownError);
+                }
+            });
+        })
+
+        $('.tombolSimpan').click(function(e) {
+            e.preventDefault();
+            let form = $('.formsimpan')[0];
+            let data = new FormData(form)
+
+            $.ajax({
+                type: "post",
+                url: "<?= site_url('produk/simpandata') ?>",
+                data: data,
+                dataType: "json",
+                enctype: 'multipart/form-data',
+                processData: false,
+                contentType: false,
+                cache: false,
+                success: function(response) {
+                    if (response.error) {
+                        let msg = response.error;
+                        if (msg.errorKodeBarcode) {
+                            $('.errorKodeBarcode').html(msg.errorKodeBarcode).show();
+                            $('#kodebarcode').addClass('is-invalid')
+                        } else {
+                            $('.errorKodeBarcode').fadeOut();
+                            $('#kodebarcode').removeClass('is-invalid');
+                            $('#kodebarcode').addClass('is-valid');
+                        }
+
+                        if (msg.errorNamaProduk) {
+                            $('.errorNamaProduk').html(msg.errorNamaProduk).show();
+                            $('#namaproduk').addClass('is-invalid')
+                        } else {
+                            $('.errorNamaProduk').fadeOut();
+                            $('#namaproduk').removeClass('is-invalid');
+                            $('#namaproduk').addClass('is-valid');
+                        }
+
+                        if (msg.errorStok) {
+                            $('.errorStok').html(msg.errorStok).show();
+                            $('#stok').addClass('is-invalid')
+                        } else {
+                            $('.errorStok').fadeOut();
+                            $('#stok').removeClass('is-invalid');
+                            $('#stok').addClass('is-valid');
+                        }
+
+                        if (msg.errorKategori) {
+                            $('.errorKategori').html(msg.errorKategori).show();
+                            $('#kategori').addClass('is-invalid')
+                        } else {
+                            $('.errorKategori').fadeOut();
+                            $('#kategori').removeClass('is-invalid');
+                            $('#kategori').addClass('is-valid');
+                        }
+
+                        if (msg.errorSatuan) {
+                            $('.errorSatuan').html(msg.errorSatuan).show();
+                            $('#satuan').addClass('is-invalid')
+                        } else {
+                            $('.errorSatuan').fadeOut();
+                            $('#satuan').removeClass('is-invalid');
+                            $('#satuan').addClass('is-valid');
+                        }
+
+                        if (msg.errorHargaBeli) {
+                            $('.errorHargaBeli').html(msg.errorHargaBeli).show();
+                            $('#hargabeli').addClass('is-invalid')
+                        } else {
+                            $('.errorHargaBeli').fadeOut();
+                            $('#hargabeli').removeClass('is-invalid');
+                            $('#hargabeli').addClass('is-valid');
+                        }
+
+
+                        if (msg.errorHargaJual) {
+                            $('.errorHargaJual').html(msg.errorHargaJual).show();
+                            $('#hargajual').addClass('is-invalid')
+                        } else {
+                            $('.errorHargaJual').fadeOut();
+                            $('#hargajual').removeClass('is-invalid');
+                            $('#hargajual').addClass('is-valid');
+                        }
+
+
+                        if (msg.errorUpload) {
+                            $('.errorUpload').html(msg.errorUpload).show();
+                            $('#uploadgambar').addClass('is-invalid')
+                        }
+
+                    } else {
+                        alert(response.sukses)
+                    }
+                },
+                error: function(xhr, thrownError) {
+                    alert(xhr.status + "\n" + xhr.responseText + "\n" + thrownError);
+                }
+            });
+        });
+
+    });
+</script>
 
 <?= $this->endSection() ?>
