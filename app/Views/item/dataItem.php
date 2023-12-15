@@ -5,7 +5,21 @@
 <?= $this->endSection() ?>
 
 
+
 <?= $this->section('isi') ?>
+
+<!-- menampilkan session dengan key 'pesan' -->
+<?php if (session()->getFlashdata('pesan')) : ?>
+    <div class="alert alert-success alert-dismissible" role="alert">
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+        <div class="alert-message">
+            <?= session()->getFlashdata('pesan'); ?>
+        </div>
+    </div>
+<?php endif; ?>
+
 <div class="card">
     <div class="card-header">
         <h3 class="card-title">
@@ -17,7 +31,6 @@
                 <i class="fa fa-plus"></i> Google Sheet
             </a>
         </h3>
-
     </div>
     <div class="card-body">
 
@@ -64,9 +77,9 @@
                                 <i class="fa fa-trash-alt"></i>
                             </button>
 
-                            <button type="button" class="btn btn-info btn-sm" title="Edit Kategori" onclick="edit('<?= $row['id'] ?>')">
+                            <a href="<?= site_url('item/edit/') . $row['id'] ?>" type="button" class="btn btn-info btn-sm" title="Edit Kategori">
                                 <i class="fa fa-pencil-alt"></i>
-                            </button>
+                            </a>
                         </td>
                     </tr>
                 <?php endforeach; ?>
@@ -97,17 +110,13 @@
                     type: "post",
                     url: "<?= site_url('item/hapus') ?>",
                     data: {
+                        nama: nama,
                         idItem: id
                     },
                     dataType: "json",
                     success: function(response) {
                         if (response.sukses) {
                             window.location.reload()
-                            // Swal.fire({
-                            //     title: "Berhasil",
-                            //     text: response.sukses,
-                            //     icon: "success"
-                            // });
                         }
                     }
                 });
@@ -119,7 +128,7 @@
     function edit(id) {
         $.ajax({
             type: "post",
-            url: "<?= site_url('kategori/formEdit') ?>",
+            url: "<?= site_url('item/formEdit') ?>",
             data: {
                 idItem: id
             },
