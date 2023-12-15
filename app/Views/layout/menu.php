@@ -34,4 +34,12 @@
         </p>
     </a>
 </li>
+<li class="nav-item">
+    <a href="<?= site_url('item/index') ?>" class="nav-link">
+        <i class="nav-icon fa fa-tasks"></i>
+        <p>
+            Item
+        </p>
+    </a>
+</li>
 <?= $this->endSection(); ?>
