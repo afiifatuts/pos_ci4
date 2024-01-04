@@ -27,7 +27,7 @@
                 <i class="fa fa-plus"></i> Tambah Item
             </a>
 
-            <a href="<?= site_url('item/googlesheet') ?>" class="btn btn-sm btn-success">
+            <a href="https://docs.google.com/spreadsheets/d/11eyL4MI9ATISrnoMcR8z_ghhTEVrbCXEYETAf_0Td78/edit#gid=0" target="_blank" class="btn btn-sm btn-success">
                 <i class="fa fa-plus"></i> Google Sheet
             </a>
         </h3>

@@ -42,4 +42,12 @@
         </p>
     </a>
 </li>
+<li class="nav-item">
+    <a href="<?= site_url('transaksi/index') ?>" class="nav-link">
+        <i class="nav-icon fa fa-tasks"></i>
+        <p>
+            Transaksi
+        </p>
+    </a>
+</li>
 <?= $this->endSection(); ?>
